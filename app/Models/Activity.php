@@ -9,6 +9,7 @@ class Activity extends Model
 {
     //
  public $table = 'activity';
+ public $fillable = ['content','adress'];
  public function allStudent()
  {
     //  获得参加这个活动的所有学生

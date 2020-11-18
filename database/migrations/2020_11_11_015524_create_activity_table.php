@@ -15,7 +15,7 @@ class CreateActivityTable extends Migration
     {
         Schema::create('activity', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('user_id')->uniqid()->comment('负责人Id');
+            $table->integer('user_id')->comment('负责人Id');
             $table->string('content')->comment('活动内容');
             $table->string('adress')->comment('活动地址');
             $table->time('start')->comment('活动开始时间');

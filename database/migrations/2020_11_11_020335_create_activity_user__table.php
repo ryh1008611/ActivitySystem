@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateJoinTable extends Migration
+class CreateActivityUserTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateJoinTable extends Migration
      */
     public function up()
     {
-        Schema::create('activity_users', function (Blueprint $table) {
+        Schema::create('activity_user', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id')->comment('参加者id');
             $table->integer('activity_id')->comment('活动id');
@@ -29,6 +29,6 @@ class CreateJoinTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('join');
+        Schema::dropIfExists('activity_user');
     }
 }

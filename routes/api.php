@@ -30,6 +30,8 @@ Route::namespace('Api')->prefix('v1')->middleware('cors')->group(function () {
             //用户退出
             Route::get('/logout', 'UserController@logout')->name('users.logout');
             Route::post('/activity/userInfo', 'ActivityController@getUserInfo')->name('activity.userInfo');
+            Route::post('/activity/create', 'ActivityController@create')->name('activity.create');
+            // Route::resource('activity', 'ActivityController');
         });
     });
     Route::middleware('admin.guard')->group(function () {
