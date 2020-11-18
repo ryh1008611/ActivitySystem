@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 
-class JoinTableSeeder extends Seeder
+class ActivityUsersTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -11,6 +11,7 @@ class JoinTableSeeder extends Seeder
      */
     public function run()
     {
+        //
         //
         $data = [
             [
@@ -39,6 +40,6 @@ class JoinTableSeeder extends Seeder
                 'status' => '0'
             ],
         ];
-        DB::table('activity_users')->insert($data);
+        DB::table('activity_user')->insert($data);
     }
 }

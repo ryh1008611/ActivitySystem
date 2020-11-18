@@ -48,15 +48,24 @@ class ActivityController extends Controller
         ]);
         $user = Auth::user();
         // return $user->id;
-        $res = Activity::create([
-            'content' => $request->content,
-            'adress' => $request->adress,
-            'user_id'=> $request->user_id
+        // $res = Activity::create([
+        //     'content' => $request->content,
+        //     'adress' => $request->adress,
+        //     'user_id'=> '2'
+        // ]);
+        $res = Activity::insert([
+            [
+                'content' => $request->content,
+                'adress' => $request->adress,
+                'user_id'=> '2',
+                'start'=> '17:36:45',
+                'end'=> '18:36:45',
+            ]
         ]);
         if($res){
-            return $this->success('成功');
+            return 'yes';
         }
-        return $this->failed('失败');
+        return 'shibai';
     }
 
     public function update()
