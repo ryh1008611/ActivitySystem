@@ -30,26 +30,30 @@ Route::namespace('Api')->prefix('v1')->middleware('cors')->group(function () {
             //用户退出
             Route::get('/logout', 'UserController@logout')->name('users.logout');
             Route::post('/activity/userInfo', 'ActivityController@getUserInfo')->name('activity.userInfo');
+
+            // 活动资源路由
+            Route::post('/activity/create', 'ActivityController@create')->name('activity.create');
+            // Route::resource('activity', 'ActivityController');
         });
     });
-    Route::middleware('admin.guard')->group(function () {
-        //管理员登录
-        Route::post('/admin/login', 'AdminController@login')->name('admins.login');
-        Route::post('/upload/file', 'FileController@upload')->name('upload');
-        Route::middleware('api.refresh')->group(function () {
-            //下拉
-            Route::get('options', 'OptionController@index')->name('options');
-            //当前管理员信息
-            Route::get('/admin/info', 'AdminController@info')->name('admins.info');
-            //管理员退出
-            Route::post('/admin/logout', 'AdminController@logout')->name('admins.logout');
-            //资源路由
-            Route::resource('rolelists', 'RolesController');
-            Route::resource('permissions', 'PermissionsController');
-            Route::resource('admin', 'AdminController');
-            Route::resource('permissions-groups', 'PermissionsGroupController');
-            Route::resource('admin-ip', 'AdminIpController');
-            Route::resource('articles', 'ArticleController');
-        });
-    });
+    // Route::middleware('admin.guard')->group(function () {
+    //     //管理员登录
+    //     Route::post('/admin/login', 'AdminController@login')->name('admins.login');
+    //     Route::post('/upload/file', 'FileController@upload')->name('upload');
+    //     Route::middleware('api.refresh')->group(function () {
+    //         //下拉
+    //         Route::get('options', 'OptionController@index')->name('options');
+    //         //当前管理员信息
+    //         Route::get('/admin/info', 'AdminController@info')->name('admins.info');
+    //         //管理员退出
+    //         Route::post('/admin/logout', 'AdminController@logout')->name('admins.logout');
+    //         //资源路由
+    //         Route::resource('rolelists', 'RolesController');
+    //         Route::resource('permissions', 'PermissionsController');
+    //         Route::resource('admin', 'AdminController');
+    //         Route::resource('permissions-groups', 'PermissionsGroupController');
+    //         Route::resource('admin-ip', 'AdminIpController');
+    //         Route::resource('articles', 'ArticleController');
+    //     });
+    // });
 });
