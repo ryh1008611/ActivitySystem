@@ -29,11 +29,11 @@ Route::namespace('Api')->prefix('v1')->middleware('cors')->group(function () {
             Route::get('/users/{user}', 'UserController@show')->name('users.show');
             //用户退出
             Route::get('/logout', 'UserController@logout')->name('users.logout');
-            Route::post('/activity/userInfo', 'ActivityController@getUserInfo')->name('activity.userInfo');
-
-            // 活动资源路由
-            Route::post('/activity/create', 'ActivityController@create')->name('activity.create');
-            // Route::resource('activity', 'ActivityController');
+            // 活动
+            // Route::post('/activity/userInfo', 'ActivityController@getUserInfo')->name('activity.userInfo');
+            // Route::post('/activity/create', 'ActivityController@create')->name('activity.create');
+            // Route::post('/activity/index', 'ActivityController@index')->name('activity.index');
+            Route::resource('activity', 'ActivityController');
         });
     });
     // Route::middleware('admin.guard')->group(function () {
