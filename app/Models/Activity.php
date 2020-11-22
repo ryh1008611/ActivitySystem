@@ -9,7 +9,7 @@ class Activity extends Model
 {
     //
  public $table = 'activity';
- public $fillable = ['content','adress'];
+ public $fillable = ['user_id','title','content','adress','rule','prize','start','end','status'];
  public function allStudent()
  {
     //  获得参加这个活动的所有学生

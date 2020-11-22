@@ -17,7 +17,7 @@ class CreateActivityUsersTable extends Migration
             $table->increments('id');
             $table->integer('user_id')->comment('参加者id');
             $table->integer('activity_id')->comment('活动id');
-            $table->enum('status', ['0', '1'])->comment('参加者状态,0-未签到，1-已签到');
+            $table->tinyInteger('status')->default(0)->comment('参加者状态,0-未签到，1-已签到');
             $table->timestamps();
         });
     }

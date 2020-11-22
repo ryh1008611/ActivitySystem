@@ -15,8 +15,8 @@ class CreateActivityTypeTable extends Migration
     {
         Schema::create('activity_type', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name')->comment('活动类型名称');
-            $table->integer('ActivityCode')->comment('活动类型代号');
+            $table->string('name')->nullable()->comment('活动类型名称');
+            $table->integer('ActivityCode')->nullable()->comment('活动类型代号');
             $table->timestamps();
         });
     }

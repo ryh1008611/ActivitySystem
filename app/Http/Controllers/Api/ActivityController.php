@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Activity;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Images;
 
 class ActivityController extends Controller
 {
@@ -51,27 +52,27 @@ class ActivityController extends Controller
        }
     }
     // /users/{user}
-    public function destroy()
+    public function destroy($id)
     {
         // 删除
-        // $model = Activity::find($id);
-        // if($model)
-        // {
-        //  //    $request->only('content','adress','start','end')
-        //      $res = $model->update($request->only('content','adress','start','end'));
-        //      if($res){
-        //          return response()->json(['code' => '200','msg' => '修改成功',]);
-        //      }
-        //      return response()->json(['code' => '201','msg' => '修改失败',]);
-        // }
-        // else
-        // {
-        //  return response()->json(['code' => '201','msg' => '活动不存在',]);
-        // }
+        $model = Activity::find($id);
+        if($model)
+        {
+             $res = $model->update([
+                 'status' => 4
+             ]);
+             if($res){
+                 return response()->json(['code' => '200','msg' => '删除成功',]);
+             }
+             return response()->json(['code' => '201','msg' => '删除失败',]);
+        }
+        else
+        {
+         return response()->json(['code' => '201','msg' => '活动不存在',]);
+        }
 
     }
-    // '/users/{user}'
-    // 查询活动
+    // 返回活动
     public function index(Request $request)
     {
         if(!$request->pageSize)
@@ -83,43 +84,53 @@ class ActivityController extends Controller
             $pageSize = $request->pageSize;
         }
         $activity = Activity::paginate($pageSize);
+        // 将字符串切割成数组
+        foreach($activity as $k)
+        {
+            $k->rule = explode('/', $k->rule);
+            $k->prize = explode('/', $k->prize);
+        }
         return response()->json(['code' => '200','msg' => '查询成功','records' => $activity]);
     }
         // 添加活动
-      /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+
     public function store(Request $request)
     {
-        // return $this->failed('失败');
+
         $this->validate($request, [
             'content' => 'required',
             'adress' => 'required'
         ]);
+        // 获取当前用户
         $user = Auth::user();
-        $res = Activity::insert([
-            [
-                'content' => $request->content,
-                'adress' => $request->adress,
-                'user_id'=> $user->id,
-                'start'=> $request->start,
-                'end'=> $request->end,
-            ]
-        ]);
-        if($res){
+        // 添加一个用户id
+        request()->offsetSet('user_id', $user->id);
+        $res = Activity::create($request->only('user_id','title','content','adress','rule','prize','start','end','status'));
+        if($request->url)
+        {
+            $img =Images::create([
+                        'activity_id' =>  $res->id,
+                        'type' => 2,
+                        'address' => $request->url
+            ]);
+            // foreach($request->images as $k)
+            // {
+            //    Images::create([
+            //         'activity_id' =>  $res->id,
+            //         'type' => 2,
+            //         'address' => $k->url
+            //     ]);
+            //     // if(!$img)
+            //     // {
+            //     //     return response()->json(['code' => '201','msg' => '添加失败',]);
+            //     // }
+            // }
+        }
+        if($res&&$img){
             return response()->json(['code' => '200','msg' => '添加成功',]);
         }
         return response()->json(['code' => '201','msg' => '添加失败',]);
     }
-
-    // public function update()
-    // {
-
-    // }
-
     public function show()
     {
 
@@ -129,15 +140,5 @@ class ActivityController extends Controller
     {
 
     }
-
-    // public function destroy()
-    // {
-
-    // }
-    // 修改活动
-    // public function edit()
-    // {
-
-    // }
 
 }
