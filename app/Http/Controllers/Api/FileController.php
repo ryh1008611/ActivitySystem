@@ -9,7 +9,8 @@ namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-
+use App\Models\Images;
+use Illuminate\Support\Facades\Auth;
 class FileController extends Controller
 {
     /**
@@ -32,9 +33,28 @@ class FileController extends Controller
                 $filename =  date('Ymd') . '-' . uniqid() . '.' . $ext;
                 // 使用我们新建的uploads本地存储空间（目录）
                 $bool = Storage::disk('public')->put($filename, file_get_contents($realPath));
+                $user = Auth::user();
                 if($bool){
-                    $message = Storage::url($filename);
-                    return $this->success($message);
+                    $res = Images::create([
+                        'operter'=> $user->id,
+                        'url'=> '/file/'.$filename,
+                        'fileName'=>$filename,
+                        'OriginalName'=>$originalName,
+                        'fileType'=>$type
+                    ]);
+                    // $message = Storage::url($filename);
+                    // return $this->success($message);
+                    if($res)
+                    {
+                        return response()->json([
+                            'code'=> 200,
+                            'msg'=>'上传成功',
+                            'data'=> [
+                                'fileId'=>$res->id,
+                                'url'=>env('APP_URL').$res->adress
+                            ]
+                        ]);
+                    }
                 }
             }
             return  $this->failed('上传失败');

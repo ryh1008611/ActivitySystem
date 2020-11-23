@@ -89,6 +89,14 @@ class ActivityController extends Controller
         {
             $k->rule = explode('/', $k->rule);
             $k->prize = explode('/', $k->prize);
+            // 获取全部属于该活动的id
+            $images = Images::query()->where('activity_id','=',$k->id)->get();
+            foreach($images as $item)
+            {
+                $item->url = env('APP_URL').$item->url;
+            }
+            $k->offsetSet('images', $images);
+
         }
         return response()->json(['code' => '200','msg' => '查询成功','records' => $activity]);
     }

@@ -8,5 +8,5 @@ class Images extends Model
 {
     //
     public $table = 'images';
-    public $fillable = ['activity_id','adress','type'];
+    public $fillable = ['activity_id','url','type','operter','fileType','OriginalName','fileName'];
 }

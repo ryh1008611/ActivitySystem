@@ -35,7 +35,8 @@ Route::namespace('Api')->prefix('v1')->middleware('cors')->group(function () {
             // Route::post('/activity/index', 'ActivityController@index')->name('activity.index');
             Route::resource('activity', 'ActivityController');
             // 上传图片
-            Route::post('/activity/uploadImg','ActivityController@uploadImg')->name('activity.uploadImg');
+            // Route::post('/activity/uploadImg','ActivityController@uploadImg')->name('activity.uploadImg');
+            Route::post('/upload/file', 'FileController@upload')->name('upload');
         });
     });
     // Route::middleware('admin.guard')->group(function () {
