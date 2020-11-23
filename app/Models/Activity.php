@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
 use App\Models\activity_user;
+use App\Models\Material;
 class Activity extends Model
 {
     //
@@ -14,5 +15,11 @@ class Activity extends Model
  {
     //  获得参加这个活动的所有学生
     return $this->belongsToMany(User::class, 'activity_user', 'activity_id','user_id');
+ }
+
+ public function allMaterial()
+ {
+    //  获得这个活动的所有物资
+    return $this->belongsToMany(Material::class, 'activity_material', 'activity_id','material_id')->withPivot('num','user_id');
  }
 }

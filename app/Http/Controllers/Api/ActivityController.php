@@ -83,7 +83,8 @@ class ActivityController extends Controller
         {
             $pageSize = $request->pageSize;
         }
-        $activity = Activity::paginate($pageSize);
+        $user = Auth::user();
+        $activity = Activity::where('user_id','=',$user->id)->paginate($pageSize);
         // 将字符串切割成数组
         foreach($activity as $k)
         {
@@ -96,7 +97,7 @@ class ActivityController extends Controller
                 $item->url = env('APP_URL').$item->url;
             }
             $k->offsetSet('images', $images);
-
+            $k->offsetSet('material',Activity::find($k->id)->allMaterial);
         }
         return response()->json(['code' => '200','msg' => '查询成功','records' => $activity]);
     }
