@@ -30,10 +30,12 @@ Route::namespace('Api')->prefix('v1')->middleware('cors')->group(function () {
             //用户退出
             Route::get('/logout', 'UserController@logout')->name('users.logout');
             // 活动
-            // Route::post('/activity/userInfo', 'ActivityController@getUserInfo')->name('activity.userInfo');
-            // Route::post('/activity/create', 'ActivityController@create')->name('activity.create');
-            // Route::post('/activity/index', 'ActivityController@index')->name('activity.index');
+            Route::post('/activity/userInfo', 'ActivityController@getUserInfo')->name('activity.userInfo');
             Route::resource('activity', 'ActivityController');
+            Route::post('/activity/list', 'ActivityController@list')->name('activity.list');
+
+
+
             Route::resource('material', 'MaterialController');
             Route::post('/material/apply', 'MaterialController@Setmaterials')->name('material.apply');
             // 上传图片

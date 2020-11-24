@@ -16,21 +16,25 @@ class RoleTableSeeder extends Seeder
             [
                 'name' => '管理员',
                 'permissions' => '1',
+                'Role_Key'=>'ADMIN',
                 'description' => '拥有其他角色的所有权限'
             ],
             [
                 'name' => '老师',
                 'permissions' => '2',
+                'Role_Key'=>'TEACHER',
                 'description' => '可以审核活动和群发邮件'
             ],
             [
                 'name' => '社团负责人',
                 'permissions' => '3',
+                'Role_Key'=>'COMMUNITY',
                 'description' => '可以申请活动和编辑活动，群发邮件'
             ],
             [
                 'name' => '学生',
                 'permissions' => '4',
+                'Role_Key'=>'STUDENT',
                 'description' => '可以浏览活动和参加活动'
             ]
         ];

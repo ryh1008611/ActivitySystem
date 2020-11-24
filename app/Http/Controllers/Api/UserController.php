@@ -27,7 +27,16 @@ class UserController extends Controller
     //返回当前登录用户信息
     public function info(){
         $user = Auth::user();
-        return $this->success(new UserResource($user));
+        $role = $user->getRole;
+        $roles = [];
+        foreach($role as $r)
+        {
+            array_push($roles,$r->Role_Key);
+        }
+        $user->offsetSet('roles',$roles);
+        $user->offsetSet('avatar','https://www.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif');
+        $user->offsetSet('introduction','还没有介绍');
+        return $this->success($user);
     }
     //用户注册
     public function store(UserRequest $request){

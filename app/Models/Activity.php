@@ -14,7 +14,7 @@ class Activity extends Model
  public function allStudent()
  {
     //  获得参加这个活动的所有学生
-    return $this->belongsToMany(User::class, 'activity_user', 'activity_id','user_id');
+    return $this->belongsToMany(User::class, 'activity_user', 'activity_id','user_id')->withPivot('status');
  }
 
  public function allMaterial()

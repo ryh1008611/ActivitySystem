@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
+use App\Models\Role;
 
 class User extends Authenticatable implements JWTSubject
 {
@@ -50,6 +51,10 @@ class User extends Authenticatable implements JWTSubject
     public function setPasswordAttribute($value)
     {
         $this->attributes['password'] = bcrypt($value);
+    }
+    public function getRole()
+    {
+        return $this->belongsToMany(Role::class, 'Role_user', 'Role_id','user_id');
     }
     public function books(){
         return $this->hasMany(Book::class,'user_id','id')->limit(2);

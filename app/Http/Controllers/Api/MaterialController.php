@@ -18,9 +18,9 @@ class MaterialController extends Controller
         ]);
         $res = Material::create($request->only('name','describe'));
         if($res){
-            return response()->json(['code' => '200','msg' => '添加成功',]);
+            return response()->json(['code' => 200,'msg' => '添加成功',]);
         }
-        return response()->json(['code' => '201','msg' => '添加失败',]);
+        return response()->json(['code' => 201,'msg' => '添加失败',]);
     }
     //查询物资
     public function index(Request $request)
@@ -35,7 +35,7 @@ class MaterialController extends Controller
         }
         $material = Material::paginate($pageSize);
         // 将字符串切割成数组
-        return response()->json(['code' => '200','msg' => '查询成功','records' => $material]);
+        return response()->json(['code' => 200,'msg' => '查询成功','records' => $material]);
     }
     //修改物资
     public function update(Request $request, $id)
@@ -46,13 +46,13 @@ class MaterialController extends Controller
         //    $request->only('content','adress','start','end')
             $res = $model->update($request->only('name','describe'));
             if($res){
-                return response()->json(['code' => '200','msg' => '修改成功',]);
+                return response()->json(['code' => 200,'msg' => '修改成功',]);
             }
-            return response()->json(['code' => '201','msg' => '修改失败',]);
+            return response()->json(['code' => 201,'msg' => '修改失败',]);
        }
        else
        {
-        return response()->json(['code' => '201','msg' => '物资不存在',]);
+        return response()->json(['code' => 201,'msg' => '物资不存在',]);
        }
     }
     // 删除物资
@@ -62,11 +62,11 @@ class MaterialController extends Controller
         $model = Material::destroy($id);
         if($model)
         {
-             return response()->json(['code' => '200','msg' => '删除成功',]);
+             return response()->json(['code' => 200,'msg' => '删除成功',]);
         }
         else
         {
-         return response()->json(['code' => '201','msg' => '物资不存在',]);
+         return response()->json(['code' => 201,'msg' => '物资不存在',]);
         }
 
     }
@@ -80,11 +80,11 @@ class MaterialController extends Controller
         $res = ActivityMaterial::create($request->only('user_id','activity_id','material_id','num'));
         if($res)
         {
-             return response()->json(['code' => '200','msg' => '添加成功',]);
+             return response()->json(['code' => 200,'msg' => '添加成功',]);
         }
         else
         {
-         return response()->json(['code' => '201','msg' => '添加失败',]);
+         return response()->json(['code' => 201,'msg' => '添加失败',]);
         }
     }
 

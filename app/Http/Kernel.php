@@ -65,6 +65,7 @@ class Kernel extends HttpKernel
         'admin.refresh'=>\App\Http\Middleware\Api\RefreshAdminTokenMiddleware::class,
         'admin.guard'=>\App\Http\Middleware\Api\AdminGuardMiddleware::class,
         'api.guard'=>\App\Http\Middleware\Api\UserGuardMiddleware::class,
+        // 'api.roles'=>\App\Http\Middleware\Api\
     ];
 
     /**

@@ -17,27 +17,27 @@ class ActivityUsersTableSeeder extends Seeder
             [
                 'user_id' => '5',
                 'activity_id' => '1',
-                'status' => '0'
+                'status' => true
             ],
             [
                 'user_id' => '6',
                 'activity_id' => '1',
-                'status' => '0'
+                'status' => false
             ],
             [
                 'user_id' => '7',
                 'activity_id' => '1',
-                'status' => '0'
+                'status' => false
             ],
             [
                 'user_id' => '8',
                 'activity_id' => '1',
-                'status' => '0'
+                'status' => false
             ],
             [
                 'user_id' => '9',
                 'activity_id' => '1',
-                'status' => '0'
+                'status' => false
             ],
         ];
         DB::table('activity_user')->insert($data);

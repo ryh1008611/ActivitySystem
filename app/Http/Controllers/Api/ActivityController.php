@@ -7,26 +7,33 @@ use App\Http\Controllers\Controller;
 use App\Models\Activity;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Images;
-
+use App\Models\User;
 class ActivityController extends Controller
 {
     //
     public function getUserInfo(Request $request)
     {
 
-        $data = Activity::find($request->activityId);
+        if(!$request->pageSize)
+        {
+            $pageSize = 10;
+        }
+        else
+        {
+            $pageSize = $request->pageSize;
+        }
+        $data = Activity::find($request->activityId)->allStudent()->paginate($pageSize);
         if($data)
         {
-            $data = $data->allStudent;
             return response()->json([
-                'code' => '200',
+                'code' => 200,
                 'msg' => '请求成功',
                 'data' => $data,
                 'total' => count($data)]);
         }
         else
         {
-            return response()->json(['code' => '201','msg' => '该活动还没有人参加',]);
+            return response()->json(['code' => 201,'msg' => '该活动还没有人参加',]);
         }
         
     }
@@ -42,13 +49,13 @@ class ActivityController extends Controller
         //    $request->only('content','adress','start','end')
             $res = $model->update($request->only('content','adress','start','end'));
             if($res){
-                return response()->json(['code' => '200','msg' => '修改成功',]);
+                return response()->json(['code' => 200,'msg' => '修改成功',]);
             }
-            return response()->json(['code' => '201','msg' => '修改失败',]);
+            return response()->json(['code' => 201,'msg' => '修改失败',]);
        }
        else
        {
-        return response()->json(['code' => '201','msg' => '活动不存在',]);
+        return response()->json(['code' => 201,'msg' => '活动不存在',]);
        }
     }
     // /users/{user}
@@ -62,13 +69,13 @@ class ActivityController extends Controller
                  'status' => 4
              ]);
              if($res){
-                 return response()->json(['code' => '200','msg' => '删除成功',]);
+                 return response()->json(['code' => 200,'msg' => '删除成功',]);
              }
-             return response()->json(['code' => '201','msg' => '删除失败',]);
+             return response()->json(['code' => 201,'msg' => '删除失败',]);
         }
         else
         {
-         return response()->json(['code' => '201','msg' => '活动不存在',]);
+         return response()->json(['code' => 201,'msg' => '活动不存在',]);
         }
 
     }
@@ -99,8 +106,61 @@ class ActivityController extends Controller
             $k->offsetSet('images', $images);
             $k->offsetSet('material',Activity::find($k->id)->allMaterial);
         }
-        return response()->json(['code' => '200','msg' => '查询成功','records' => $activity]);
+        return response()->json(['code' => 200,'msg' => '查询成功','records' => $activity]);
     }
+
+    // 返回活动列别
+    public function list(Request $request)
+    {
+        // 需要返回活动名称，活动标题，开始时间，结束时间
+        if(!$request->pageSize)
+        {
+            $pageSize = 10;
+        }
+        else
+        {
+            $pageSize = $request->pageSize;
+        }
+        $user = Auth::user();
+        $user_role = $user->getRole;
+
+        if($user_role[0]->Role_Key == 'ADMIN' || $user_role[0]->Role_Key == 'TEACHER')
+        {
+            $activity = Activity::paginate($pageSize);
+        }
+        else if($user_role[0]->Role_Key == 'COMMUNITY')
+        {
+            $activity = Activity::where('user_id','=',$user->id)->paginate($pageSize);
+        }
+        // $activity = Activity::paginate($pageSize);
+        // 将字符串切割成数组
+        foreach($activity as $k)
+        {
+            $k->rule = explode('/', $k->rule);
+            $k->prize = explode('/', $k->prize);
+            // 获取全部属于该活动的id
+            $images = Images::query()->where('activity_id','=',$k->id)->get();
+            foreach($images as $item)
+            {
+                $item->url = env('APP_URL').$item->url;
+            }
+            $peopleNum = Activity::find($k->id)->allStudent;
+            $k->offsetSet('joins', [
+                'Num' => count($peopleNum),
+                'people' => $peopleNum
+            ]);
+            // 该活动图片
+            $k->offsetSet('name', User::where('id','=',$k->user_id)->get()[0]->name);
+            $k->offsetSet('images', $images);
+            // 获取该活动的所使用物资
+            $k->offsetSet('material',Activity::find($k->id)->allMaterial);
+        }
+        return response()->json(['code' => 200,'msg' => '查询成功','records' => $activity]);
+    }
+
+
+
+
         // 添加活动
 
     public function store(Request $request)
@@ -136,18 +196,10 @@ class ActivityController extends Controller
             // }
         }
         if($res&&$img){
-            return response()->json(['code' => '200','msg' => '添加成功',]);
+            return response()->json(['code' => 200,'msg' => '添加成功',]);
         }
-        return response()->json(['code' => '201','msg' => '添加失败',]);
+        return response()->json(['code' => 201,'msg' => '添加失败',]);
     }
-    public function show()
-    {
-
-    }
-
-    public function save()
-    {
-
-    }
+    public function show(){}
 
 }
