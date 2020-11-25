@@ -15,8 +15,8 @@ class CreateMailboxTable extends Migration
     {
         Schema::create('mailbox', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('邮箱')->comment('邮箱');
-            $table->integer('user_id')->comment('用户id');
+            $table->string('mail_adress')->comment('邮箱');
+            $table->integer('user_id')->unique()->comment('用户id');
             $table->string('authorizationCode')->comment('授权码');
             $table->timestamps();
         });

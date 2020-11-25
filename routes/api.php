@@ -33,14 +33,15 @@ Route::namespace('Api')->prefix('v1')->middleware('cors')->group(function () {
             Route::post('/activity/userInfo', 'ActivityController@getUserInfo')->name('activity.userInfo');
             Route::resource('activity', 'ActivityController');
             Route::post('/activity/list', 'ActivityController@list')->name('activity.list');
-
-
-
+            // 材料
             Route::resource('material', 'MaterialController');
             Route::post('/material/apply', 'MaterialController@Setmaterials')->name('material.apply');
+            // 邮箱
+            Route::resource('mail', 'MailController');
             // 上传图片
             // Route::post('/activity/uploadImg','ActivityController@uploadImg')->name('activity.uploadImg');
             Route::post('/upload/file', 'FileController@upload')->name('upload');
+            Route::post('/mail/send', 'MailController@sendMail')->name('mail.send');
         });
     });
     // Route::middleware('admin.guard')->group(function () {

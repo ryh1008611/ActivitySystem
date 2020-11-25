@@ -15,19 +15,23 @@ class UserTableSeeder extends Seeder
         $data = [
             [
                 'username' => 'admin',
-                'password' => bcrypt('123456')  
+                'password' => bcrypt('123456'),
+                'name' => '管理员'
             ],
             [
                 'username' => 'teacher',
-                'password' => bcrypt('123456')  
+                'password' => bcrypt('123456'),
+                'name' => '老师' 
             ],
             [
                 'username' => 'student',
-                'password' => bcrypt('123456')  
+                'password' => bcrypt('123456'),
+                'name' => '学生'  
             ],
             [
                 'username' => 'community',
-                'password' => bcrypt('123456')  
+                'password' => bcrypt('123456'),
+                'name' => '社团管理员'  
             ]
             ];
         $student = [
