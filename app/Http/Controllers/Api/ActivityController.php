@@ -62,20 +62,29 @@ class ActivityController extends Controller
     public function destroy($id)
     {
         // 删除
+        $user = Auth::user();
+        $user_role = $user->getRole;
         $model = Activity::find($id);
-        if($model)
+        if($user_role[0]->Role_Key == 'ADMIN' || $user_role[0]->Role_Key == 'TEACHER')
         {
+            if($model)
+            {
              $res = $model->update([
                  'status' => 4
              ]);
              if($res){
-                 return response()->json(['code' => 200,'msg' => '删除成功',]);
+                return response()->json(['code' => 200,'msg' => '删除成功',]);
              }
-             return response()->json(['code' => 201,'msg' => '删除失败',]);
+                return response()->json(['code' => 201,'msg' => '删除失败',]);
+            }
+            else
+            {
+                return response()->json(['code' => 201,'msg' => '活动不存在',]);
+            }
         }
         else
         {
-         return response()->json(['code' => 201,'msg' => '活动不存在',]);
+            return response()->json(['code' => 201,'msg' => '你没有这个权限',]);
         }
 
     }
@@ -126,11 +135,11 @@ class ActivityController extends Controller
 
         if($user_role[0]->Role_Key == 'ADMIN' || $user_role[0]->Role_Key == 'TEACHER')
         {
-            $activity = Activity::paginate($pageSize);
+            $activity = Activity::where('status','!=',4)->paginate($pageSize);
         }
         else if($user_role[0]->Role_Key == 'COMMUNITY')
         {
-            $activity = Activity::where('user_id','=',$user->id)->paginate($pageSize);
+            $activity = Activity::where('user_id','=',$user->id)->where('status','!=',4)->paginate($pageSize);
         }
         // $activity = Activity::paginate($pageSize);
         // 将字符串切割成数组
@@ -200,6 +209,34 @@ class ActivityController extends Controller
         }
         return response()->json(['code' => 201,'msg' => '添加失败',]);
     }
-    public function show(){}
+    public function show($id){
+        $activity = Activity::where('id','=',$id)->get();
+   
+        if(count($activity)>0)
+        {
+            foreach($activity as $k)
+            {
+                // 获取规则
+                $k->rule = explode('/', $k->rule);
+                $k->prize = explode('/', $k->prize);
+                // 获取全部属于该活动的id
+                // 该活动图片
+                $images = Images::query()->where('activity_id','=',$k->id)->get();
+                foreach($images as $item)
+                {
+                $item->url = env('APP_URL').$item->url;
+                }
+                $k->offsetSet('images', $images);
+                // 发起者姓名
+                $k->offsetSet('name', User::where('id','=',$k->user_id)->get()[0]->name);
+                
+            }
+            return response()->json(['code' => 200,'msg' => '查询成功','data'=>$activity]);
+        }
+        else
+        {
+            return response()->json(['code' => 201,'msg' => '找不到该活动']);
+        }
+    }
 
 }

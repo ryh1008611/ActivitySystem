@@ -51,7 +51,7 @@ class FileController extends Controller
                             'msg'=>'上传成功',
                             'data'=> [
                                 'fileId'=>$res->id,
-                                'url'=>env('APP_URL').$res->adress
+                                'url'=>env('APP_URL').'/file/'.$filename
                             ]
                         ]);
                     }
