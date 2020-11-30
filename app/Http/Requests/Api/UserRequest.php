@@ -23,6 +23,11 @@ class UserRequest extends FormRequest
                     ];
                 }
             case 'PUT':
+                {
+                    return [
+                        'phone' => ['max:11','min:11']
+                    ];
+                }
             case 'PATCH':
             case 'DELETE':
             default:

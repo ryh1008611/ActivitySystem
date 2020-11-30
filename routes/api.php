@@ -25,6 +25,7 @@ Route::namespace('Api')->prefix('v1')->middleware('cors')->group(function () {
             Route::get('/users/info', 'UserController@info')->name('users.info');
             //用户列表
             Route::get('/users', 'UserController@index')->name('users.index');
+            Route::put('/users/update', 'UserController@update')->name('users.update');
             //用户信息
             Route::get('/users/{user}', 'UserController@show')->name('users.show');
             //用户退出
@@ -38,6 +39,8 @@ Route::namespace('Api')->prefix('v1')->middleware('cors')->group(function () {
             Route::post('/material/apply', 'MaterialController@Setmaterials')->name('material.apply');
             // 邮箱
             Route::resource('mail', 'MailController');
+            // 邮箱信息
+            Route::resource('emailInfo', 'EmailInfoController');
             // 上传图片
             // Route::post('/activity/uploadImg','ActivityController@uploadImg')->name('activity.uploadImg');
             Route::post('/upload/file', 'FileController@upload')->name('upload');

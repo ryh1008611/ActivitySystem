@@ -62,6 +62,19 @@ class MailController extends Controller
         }
 
     }
+    public function index()
+    {
+        $user = Auth::user();
+        $res = MailBox::where('user_id','=',$user->id)->get();
+        if($res)
+        {
+            return response()->json([
+                'code' => 200,
+                'data'=> $res
+            ]);
+        }
+
+    }
     public function sendMail(Request $request)
     {
         // Config::set('mail.encryption','ssl');

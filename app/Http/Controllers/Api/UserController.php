@@ -43,6 +43,18 @@ class UserController extends Controller
         User::create($request->all());
         return $this->setStatusCode(200)->success('用户注册成功');
     }
+    // 当前用户信息修改
+    public function update(UserRequest $request){
+        $res = User::find(Auth::user()->id)->update($request->only('name','phone','classNum','academy','major'));
+        if($res)
+        {
+            return $this->setStatusCode(200)->success('修改成功');
+        }
+        else
+        {
+            return $this->failed('修改失败',201);
+        }
+    }
     //用户登录
     public function login(Request $request){
         $token=Auth::claims(['guard'=>'api'])->attempt(['username'=>$request->username,'password'=>$request->password]);
