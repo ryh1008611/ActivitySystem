@@ -184,27 +184,16 @@ class ActivityController extends Controller
         // 添加一个用户id
         request()->offsetSet('user_id', $user->id);
         $res = Activity::create($request->only('user_id','title','content','adress','rule','prize','start','end','status'));
-        if($request->url)
-        {
-            $img =Images::create([
-                        'activity_id' =>  $res->id,
-                        'type' => 2,
-                        'address' => $request->url
-            ]);
-            // foreach($request->images as $k)
-            // {
-            //    Images::create([
-            //         'activity_id' =>  $res->id,
-            //         'type' => 2,
-            //         'address' => $k->url
-            //     ]);
-            //     // if(!$img)
-            //     // {
-            //     //     return response()->json(['code' => '201','msg' => '添加失败',]);
-            //     // }
-            // }
-        }
-        if($res&&$img){
+        // if(count($request->images))
+        // {
+        //     // foreach($request->images as $k)
+        //     // {
+        //     //     Images::find($k->fileId)->update([
+        //     //         'activity_id' => $res->id
+        //     //     ]);
+        //     // }
+        // }
+        if($res){
             return response()->json(['code' => 200,'msg' => '添加成功',]);
         }
         return response()->json(['code' => 201,'msg' => '添加失败',]);
