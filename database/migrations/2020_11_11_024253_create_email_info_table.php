@@ -19,7 +19,7 @@ class CreateEmailInfoTable extends Migration
             $table->string('launch')->nullable()->comment('发起的邮箱');
             $table->string('target')->nullable()->comment('目标的邮箱');
             $table->string('title')->nullable()->comment('邮箱发送的题目');
-            $table->string('content')->nullable()->comment('邮箱发送内容');
+            $table->text('content')->nullable()->comment('邮箱发送内容');
             $table->timestamps();
         });
     }

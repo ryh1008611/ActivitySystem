@@ -40,6 +40,8 @@ Route::namespace('Api')->prefix('v1')->middleware('cors')->group(function () {
             // 邮箱
             Route::resource('mail', 'MailController');
             // 邮箱信息
+            Route::post('/mail/Receive', 'EmailInfoController@Receive')->name('mail.Receive');
+            // 邮箱信息字眼路由
             Route::resource('emailInfo', 'EmailInfoController');
             // 上传图片
             // Route::post('/activity/uploadImg','ActivityController@uploadImg')->name('activity.uploadImg');
