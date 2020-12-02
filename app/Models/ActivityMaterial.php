@@ -8,7 +8,7 @@ class ActivityMaterial extends Model
 {
     //
     public $table = 'activity_material';
-    public $fillable = ['user_id','activity_id','material_id','num'];
+    public $fillable = ['user_id','activity_id','material_id','num','status'];
     protected $hidden = [
         'created_at',
         'updated_at'

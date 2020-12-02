@@ -20,6 +20,6 @@ class Activity extends Model
  public function allMaterial()
  {
     //  获得这个活动的所有物资
-    return $this->belongsToMany(Material::class, 'activity_material', 'activity_id','material_id')->withPivot('num','user_id');
+    return $this->belongsToMany(Material::class, 'activity_material', 'activity_id','material_id')->where('status','=','1')->withPivot('num','user_id');
  }
 }

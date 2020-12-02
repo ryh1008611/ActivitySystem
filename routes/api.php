@@ -36,7 +36,11 @@ Route::namespace('Api')->prefix('v1')->middleware('cors')->group(function () {
             Route::post('/activity/list', 'ActivityController@list')->name('activity.list');
             // 材料
             Route::resource('material', 'MaterialController');
+            // 材料申请
             Route::post('/material/apply', 'MaterialController@Setmaterials')->name('material.apply');
+            // 材料_活动
+            Route::resource('activityMaterial', 'ActivityMaterialController');
+            // 邮箱栏目
             // 邮箱
             Route::resource('mail', 'MailController');
             // 邮箱信息
