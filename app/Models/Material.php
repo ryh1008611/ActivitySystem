@@ -8,7 +8,7 @@ class Material extends Model
 {
     //
     public $table = 'material';
-    public $fillable = ['name','describe'];
+    public $fillable = ['name','describe','status'];
     protected $hidden = [
         'created_at',
         'updated_at'

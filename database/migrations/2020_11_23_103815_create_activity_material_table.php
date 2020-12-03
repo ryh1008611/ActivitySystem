@@ -19,7 +19,7 @@ class CreateActivityMaterialTable extends Migration
             $table->integer('activity_id')->comment('活动Id');
             $table->integer('material_id')->comment('物资id');
             $table->integer('num')->comment('物资数量');
-            $table->tinyInteger('status')->default(0)->comment('租借状态,0-未审核，1-已发放，2-已归还');
+            $table->tinyInteger('apply_status')->default(0)->comment('租借状态,0-未审核，1-已发放，2-已归还');
             $table->integer('operater')->nullable()->comment('操作者');
             $table->timestamps();
         });

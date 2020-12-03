@@ -34,11 +34,13 @@ Route::namespace('Api')->prefix('v1')->middleware('cors')->group(function () {
             Route::post('/activity/userInfo', 'ActivityController@getUserInfo')->name('activity.userInfo');
             Route::resource('activity', 'ActivityController');
             Route::post('/activity/list', 'ActivityController@list')->name('activity.list');
+            // 申请活动
             // 材料
             Route::resource('material', 'MaterialController');
             // 材料申请
             Route::post('/material/apply', 'MaterialController@Setmaterials')->name('material.apply');
             // 材料_活动
+            Route::post('/activityMaterial/update/Info', 'ActivityMaterialController@updateMaterialInfo')->name('activityMaterial.update');
             Route::resource('activityMaterial', 'ActivityMaterialController');
             // 邮箱栏目
             // 邮箱

@@ -16,7 +16,7 @@ class MaterialController extends Controller
         $this->validate($request, [
             'name' => 'required'
         ]);
-        $res = Material::create($request->only('name','describe'));
+        $res = Material::create($request->only('name','describe','status'));
         if($res){
             return response()->json(['code' => 200,'msg' => '添加成功',]);
         }
@@ -44,7 +44,7 @@ class MaterialController extends Controller
        if($model)
        {
         //    $request->only('content','adress','start','end')
-            $res = $model->update($request->only('name','describe'));
+            $res = $model->update($request->only('name','describe','status'));
             if($res){
                 return response()->json(['code' => 200,'msg' => '修改成功',]);
             }

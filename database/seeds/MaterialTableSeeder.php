@@ -15,7 +15,8 @@ class MaterialTableSeeder extends Seeder
         $material = [
             [
                 'name' => '大帐篷',
-                'describe'=>'一个很大的帐篷'
+                'describe'=>'一个很大的帐篷',
+                'status'=> 1
             ],
             [
                 'name' => 'BT纸',

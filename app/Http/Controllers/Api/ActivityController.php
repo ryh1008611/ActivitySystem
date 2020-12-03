@@ -91,31 +91,10 @@ class ActivityController extends Controller
     // 返回活动
     public function index(Request $request)
     {
-        if(!$request->pageSize)
-        {
-            $pageSize = 10;
-        }
-        else
-        {
-            $pageSize = $request->pageSize;
-        }
         $user = Auth::user();
-        $activity = Activity::where('user_id','=',$user->id)->paginate($pageSize);
+        $activity = Activity::where('user_id','=',$user->id)->where('status','=',1)->get();
         // 将字符串切割成数组
-        foreach($activity as $k)
-        {
-            $k->rule = explode('/', $k->rule);
-            $k->prize = explode('/', $k->prize);
-            // 获取全部属于该活动的id
-            $images = Images::query()->where('activity_id','=',$k->id)->get();
-            foreach($images as $item)
-            {
-                $item->url = env('APP_URL').$item->url;
-            }
-            $k->offsetSet('images', $images);
-            $k->offsetSet('material',Activity::find($k->id)->allMaterial);
-        }
-        return response()->json(['code' => 200,'msg' => '查询成功','records' => $activity]);
+        return response()->json(['code' => 200,'msg' => '查询成功','data' => $activity]);
     }
 
     // 返回活动列别
@@ -132,7 +111,6 @@ class ActivityController extends Controller
         }
         $user = Auth::user();
         $user_role = $user->getRole;
-
         if($user_role[0]->Role_Key == 'ADMIN' || $user_role[0]->Role_Key == 'TEACHER')
         {
             $activity = Activity::where('status','!=',4)->paginate($pageSize);
@@ -141,7 +119,6 @@ class ActivityController extends Controller
         {
             $activity = Activity::where('user_id','=',$user->id)->where('status','!=',4)->paginate($pageSize);
         }
-        // $activity = Activity::paginate($pageSize);
         // 将字符串切割成数组
         foreach($activity as $k)
         {
@@ -164,6 +141,7 @@ class ActivityController extends Controller
             // 获取该活动的所使用物资
             $k->offsetSet('material',Activity::find($k->id)->allMaterial);
         }
+        // return 1;
         return response()->json(['code' => 200,'msg' => '查询成功','records' => $activity]);
     }
 
@@ -175,6 +153,7 @@ class ActivityController extends Controller
     public function store(Request $request)
     {
 
+        // return $request->images;
         $this->validate($request, [
             'content' => 'required',
             'adress' => 'required'
@@ -184,15 +163,16 @@ class ActivityController extends Controller
         // 添加一个用户id
         request()->offsetSet('user_id', $user->id);
         $res = Activity::create($request->only('user_id','title','content','adress','rule','prize','start','end','status'));
-        // if(count($request->images))
-        // {
-        //     // foreach($request->images as $k)
-        //     // {
-        //     //     Images::find($k->fileId)->update([
-        //     //         'activity_id' => $res->id
-        //     //     ]);
-        //     // }
-        // }
+        // return 
+        if(count($request->images)>0)
+        {
+            foreach($request->images as $k)
+            {
+                Images::find($k['fileId'])->update([
+                    'activity_id' => $res->id
+                ]);
+            }
+        }
         if($res){
             return response()->json(['code' => 200,'msg' => '添加成功',]);
         }
