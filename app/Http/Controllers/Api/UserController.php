@@ -15,10 +15,10 @@ class UserController extends Controller
 {
 
     //返回用户列表
-    public function index(){
+    public function index(Request $request){
         //3个用户为一页
-        $users = User::paginate(3);
-        return UserResource::collection($users);
+        $users = User::paginate($request->pageSize ? $request->pageSize : 10);
+        return $users;
     }
     //返回单一用户信息
     public function show(User $user){

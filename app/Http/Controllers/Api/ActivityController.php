@@ -14,15 +14,7 @@ class ActivityController extends Controller
     public function getUserInfo(Request $request)
     {
 
-        if(!$request->pageSize)
-        {
-            $pageSize = 10;
-        }
-        else
-        {
-            $pageSize = $request->pageSize;
-        }
-        $data = Activity::find($request->activityId)->allStudent()->paginate($pageSize);
+        $data = Activity::find($request->activityId)->allStudent()->paginate($request->pageSize ? $request->pageSize : 10);
         if($data)
         {
             return response()->json([
@@ -101,14 +93,7 @@ class ActivityController extends Controller
     public function list(Request $request)
     {
         // 需要返回活动名称，活动标题，开始时间，结束时间
-        if(!$request->pageSize)
-        {
-            $pageSize = 10;
-        }
-        else
-        {
-            $pageSize = $request->pageSize;
-        }
+        $pageSize = $request->pageSize ? $request->pageSize : 10;
         $user = Auth::user();
         $user_role = $user->getRole;
         if($user_role[0]->Role_Key == 'ADMIN' || $user_role[0]->Role_Key == 'TEACHER')
