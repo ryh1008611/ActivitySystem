@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 // 模型
 use App\Models\MailBox;
 use App\Models\EmailInfo;
+use App\Models\User;
 class MailController extends Controller
 {
     //
@@ -44,7 +45,11 @@ class MailController extends Controller
         else
         {
             $request->offsetSet('user_id',$user->id);
+            // 更改用户邮箱绑定表
             $mail_info = MailBox::create($request->only('user_id','mail_adress','authorizationCode'));
+            // 更改用户邮箱信息
+            $uses_update = User::find(Auth::user()->id)->update(['email' => $request->mail_adress ]);
+            // 返回信息
             if($mail_info)
             {
                 return response()->json([
@@ -135,5 +140,15 @@ class MailController extends Controller
                 'msg'=>'该用户还未绑定邮箱'
             ]);
         }
+    }
+    // 发送验证码
+    public function sendCheckCode(Request $request)
+    {
+
+        $target = $request->target;
+        Mail::send('emails.test',['name'=>$name],function($message){ 
+            $to = '123456789@qq.com'; $message ->to($to)->subject('邮件测试'); 
+            }); 
+        
     }
 }

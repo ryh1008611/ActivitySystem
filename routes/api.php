@@ -30,6 +30,8 @@ Route::namespace('Api')->prefix('v1')->middleware('cors')->group(function () {
             Route::get('/users/{user}', 'UserController@show')->name('users.show');
             //用户退出
             Route::get('/logout', 'UserController@logout')->name('users.logout');
+            //修改用户状态
+            Route::put('/users/status', 'UserController@updateStatus')->name('users.updateStatus');
             // 活动
             Route::post('/activity/userInfo', 'ActivityController@getUserInfo')->name('activity.userInfo');
             Route::resource('activity', 'ActivityController');
@@ -56,6 +58,11 @@ Route::namespace('Api')->prefix('v1')->middleware('cors')->group(function () {
 
             // 活动类型管理
             Route::resource('activityType', 'ActivityTypeController');
+
+
+            // 权限管理
+            Route::resource('roles', 'RoleController');
+            Route::resource('user-role', 'UserRoleController');
         });
     });
     // Route::middleware('admin.guard')->group(function () {

@@ -5,8 +5,8 @@ namespace App\Http\Controllers\Api;
 use App\Http\Requests\Api\UserRequest;
 use App\Http\Resources\Api\UserResource;
 use App\Jobs\Api\SaveLastTokenJob;
-use App\Models\Book;
 use App\Models\User;
+use App\Models\users;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Tymon\JWTAuth\Exceptions\TokenExpiredException;
@@ -17,8 +17,30 @@ class UserController extends Controller
     //返回用户列表
     public function index(Request $request){
         //3个用户为一页
-        $users = User::paginate($request->pageSize ? $request->pageSize : 10);
-        return $users;
+        $users = users::paginate($request->pageSize ? $request->pageSize : 10);
+        foreach($users as $u)
+        {
+            $roles = [];
+            foreach($u->getRole as $r)
+            {
+            array_push($roles,$r->Role_Key);
+            }
+            $u->offsetSet('roles',$roles);
+        }
+        if($users)
+        {
+            return response()->json([
+                'code' => 200,
+                'records' => $users
+            ]);
+        }
+        else
+        {
+            return response()->json([
+                'code' => 201,
+                'msg' => '暂时信息'
+            ]);
+        }
     }
     //返回单一用户信息
     public function show(User $user){
@@ -55,12 +77,35 @@ class UserController extends Controller
             return $this->failed('修改失败',201);
         }
     }
+    //修改用户状态 0-可用 1-禁用
+    public function updateStatus(Request $request){
+        $res = User::where('id','=',$request->user_id)->update([
+            'status' => $request->status
+        ]);
+        if($res)
+        {
+            return response()->json([
+                'code' => 200 ,
+                'msg' => '修改成功!'
+            ]);
+        }
+        else
+        {
+            return response()->json([
+                'code' => 200 ,
+                'msg' => '修改失败!'
+            ]);
+        }
+    }
     //用户登录
     public function login(Request $request){
         $token=Auth::claims(['guard'=>'api'])->attempt(['username'=>$request->username,'password'=>$request->password]);
         if($token) {
             //如果登陆，先检查原先是否有存token，有的话先失效，然后再存入最新的token
             $user = Auth::user();
+            // if()
+            if(User::find($user->id)->status == 1)
+            return $this->failed('该账号被禁用',400);
             if($user->last_token){
                 try{
                     Auth::setToken($user->last_token)->invalidate();
