@@ -26,6 +26,8 @@ Route::namespace('Api')->prefix('v1')->middleware('cors')->group(function () {
             //用户列表
             Route::get('/users', 'UserController@index')->name('users.index');
             Route::put('/users/update', 'UserController@update')->name('users.update');
+            // 修改密码
+            Route::put('/users/update-password', 'UserController@updatePassword')->name('users.password');
             //用户信息
             Route::get('/users/{user}', 'UserController@show')->name('users.show');
             //用户退出

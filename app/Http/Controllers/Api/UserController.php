@@ -77,6 +77,20 @@ class UserController extends Controller
             return $this->failed('修改失败',201);
         }
     }
+    // 修改密码
+    public function updatePassword(Request $request) {
+        
+        if($request->input('password')){
+            $res = User::find(Auth::user()->id)->update([
+                'password'=> $request->input('password') 
+            ]);
+        }
+        if($res){
+            Auth::logout();
+            return $this->success('修改成功!请重新登录!');  
+        }
+        return $this->failed('失败');
+    }
     //修改用户状态 0-可用 1-禁用
     public function updateStatus(Request $request){
         $res = User::where('id','=',$request->user_id)->update([
