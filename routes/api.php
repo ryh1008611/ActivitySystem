@@ -36,8 +36,15 @@ Route::namespace('Api')->prefix('v1')->middleware('cors')->group(function () {
             Route::put('/users/status', 'UserController@updateStatus')->name('users.updateStatus');
             // 活动
             Route::post('/activity/userInfo', 'ActivityController@getUserInfo')->name('activity.userInfo');
+            // 活动资源路由
             Route::resource('activity', 'ActivityController');
+
+            // 获取我申请的活动
+            // Route::post('/activity-list/apply', 'ActivityController@myApplyActivity')->name('activity.myActivity');
+            // Route::post('/activity-list/join', 'ActivityController@myJoinActivity')->name('activity.myJoin');
+            // 更改活动状态
             Route::post('/activity/list', 'ActivityController@list')->name('activity.list');
+            Route::post('/activity/updateStatus', 'ActivityController@updateStatus')->name('activity.lupdateStatusist');
             // 申请活动
             // 材料
             Route::resource('material', 'MaterialController');

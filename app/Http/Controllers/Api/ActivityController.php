@@ -50,6 +50,26 @@ class ActivityController extends Controller
         return response()->json(['code' => 201,'msg' => '活动不存在',]);
        }
     }
+    // 更改活动状态
+    public function updateStatus(Request $request)
+    {
+        $model = Activity::find($request->id);
+       if($model)
+       {
+        //    $request->only('content','adress','start','end')
+            $res = $model->update([
+                'status' => $request->status
+            ]);
+            if($res){
+                return response()->json(['code' => 200,'msg' => '修改成功',]);
+            }
+            return response()->json(['code' => 201,'msg' => '修改失败',]);
+       }
+       else
+       {
+        return response()->json(['code' => 201,'msg' => '活动不存在',]);
+       }
+    }
     // /users/{user}
     public function destroy($id)
     {
@@ -89,7 +109,7 @@ class ActivityController extends Controller
         return response()->json(['code' => 200,'msg' => '查询成功','data' => $activity]);
     }
 
-    // 返回活动列别
+    // 返回活动列表
     public function list(Request $request)
     {
         // 需要返回活动名称，活动标题，开始时间，结束时间
@@ -98,12 +118,28 @@ class ActivityController extends Controller
         $user_role = $user->getRole;
         if($user_role[0]->Role_Key == 'ADMIN' || $user_role[0]->Role_Key == 'TEACHER')
         {
-            $activity = Activity::where('status','!=',4)->paginate($pageSize);
+            $activity = Activity::where('status','!=',4);
         }
         else if($user_role[0]->Role_Key == 'COMMUNITY')
         {
-            $activity = Activity::where('user_id','=',$user->id)->where('status','!=',4)->paginate($pageSize);
+            $activity = Activity::where('user_id','=',$user->id)->where('status','!=',4);
         }
+        // 查询条件
+        if($request->input('title'))
+        {
+            $activity = $activity->where('title','like','%'.$request->title.'%');
+        }
+        // 根据活动地址查询
+        if($request->input('adress'))
+        {
+            $activity = $activity->where('adress','like','%'.$request->title.'%');
+        }
+        // 根据状态查询
+        if($request->input('status'))
+        {
+            $activity = $activity->where('status','=',$request->status);
+        }
+        $activity = $activity->paginate($pageSize);
         // 将字符串切割成数组
         foreach($activity as $k)
         {
@@ -192,5 +228,14 @@ class ActivityController extends Controller
             return response()->json(['code' => 201,'msg' => '找不到该活动']);
         }
     }
+
+    // 获取我发布的活动
+    public function myApplyActivity(Request $request) {
+         // 需要返回活动名称，活动标题，开始时间，结束时间
+    }
+    public function myJoinActivity(Request $request) {
+        
+    }
+    // 获取我参加的活动
 
 }

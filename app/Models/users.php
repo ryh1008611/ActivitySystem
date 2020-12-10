@@ -16,6 +16,6 @@ class users extends Model
     ];
     public function getRole()
     {
-        return $this->belongsToMany(Role::class, 'Role_user', 'Role_id','user_id');
+        return $this->belongsToMany(Role::class, 'Role_user', 'user_id','Role_id')->withPivot('id');
     }
 }
