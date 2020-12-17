@@ -18,8 +18,9 @@ class UserRequest extends FormRequest
             case 'POST':
                 {
                     return [
-                        'name' => ['required', 'max:12', 'unique:users,name'],
-                        'password' => ['required', 'max:16', 'min:6']
+                        'username' => ['required', 'max:12'],
+                        'password' => ['required', 'max:16', 'min:6'],
+                        'email' => ['required']
                     ];
                 }
             case 'PUT':

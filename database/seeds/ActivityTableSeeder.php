@@ -13,7 +13,7 @@ class ActivityTableSeeder extends Seeder
     {
 
         $data = [];
-        for($i = 0;$i<100;$i++)
+        for($i = 0;$i<2;$i++)
         {
             if($i%2 == 0){
             array_push($data,[

@@ -6,4 +6,5 @@
 2.确保本地redis打开
 3.php artisan migrate:refrsh --seed 生成数据库与测试数据
 php artisan key:generate
+php artisan jwt:secret
 4.php artisan serve  启动项目

@@ -42,7 +42,7 @@ class UserTableSeeder extends Seeder
                 'academy' => '计算机工程学院',
                 'major' => '软件工程',
                 'classNum' => '2017',
-                'email' => '51215451@qq.com'
+                'email' => '987896519@qq.com'
             ],
             [
                 'username' => 'lisi',

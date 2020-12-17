@@ -19,7 +19,8 @@ Route::namespace('Api')->prefix('v1')->middleware('cors')->group(function () {
         Route::post('/users', 'UserController@store')->name('users.store');
         //用户登录
         Route::post('/login', 'UserController@login')->name('users.login');
-
+        Route::post('/mail/sendCheckCode', 'MailController@sendCheckCode')->name('mail.sendCheckCode');
+            // 发送验证码
         Route::middleware('api.refresh')->group(function () {
             //当前用户信息
             Route::get('/users/info', 'UserController@info')->name('users.info');
@@ -45,6 +46,10 @@ Route::namespace('Api')->prefix('v1')->middleware('cors')->group(function () {
             // 更改活动状态
             Route::post('/activity/list', 'ActivityController@list')->name('activity.list');
             Route::post('/activity/updateStatus', 'ActivityController@updateStatus')->name('activity.lupdateStatusist');
+                // 更改轮播栏状态
+            Route::post('/activity/updateRotation', 'ActivityController@updateRotation')->name('activity.updateRotation');
+               // 更改资讯栏状态
+            Route::post('/activity/updateInfomation', 'ActivityController@updateInfomation')->name('activity.updateInfomation');
             // 申请活动
             // 材料
             Route::resource('material', 'MaterialController');
@@ -59,6 +64,8 @@ Route::namespace('Api')->prefix('v1')->middleware('cors')->group(function () {
             // 邮箱信息
             Route::post('/mail/Receive', 'EmailInfoController@Receive')->name('mail.Receive');
             // 邮箱信息字眼路由
+            Route::post('/mail/sendUserGroup', 'MailController@sendUserGroup')->name('mail.sendUserGroup');
+            // 群发邮箱
             Route::resource('emailInfo', 'EmailInfoController');
             // 上传图片
             // Route::post('/activity/uploadImg','ActivityController@uploadImg')->name('activity.uploadImg');

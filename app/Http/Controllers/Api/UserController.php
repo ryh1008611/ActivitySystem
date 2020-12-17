@@ -10,7 +10,7 @@ use App\Models\users;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Tymon\JWTAuth\Exceptions\TokenExpiredException;
-
+use App\Models\UserRole;
 class UserController extends Controller
 {
 
@@ -62,8 +62,19 @@ class UserController extends Controller
     }
     //用户注册
     public function store(UserRequest $request){
-        User::create($request->all());
-        return $this->setStatusCode(200)->success('用户注册成功');
+        $res = User::create($request->all());
+        if($res)
+        {
+            $role = UserRole::create([
+                'user_id'=> $res->id,
+                'role_id'=> 4
+            ]);
+            if($role)
+            {
+                return $this->setStatusCode(200)->success('用户注册成功');
+            }
+        }
+        // return $this->setStatusCode(200)->success('用户注册成功');
     }
     // 当前用户信息修改
     public function update(UserRequest $request){

@@ -24,6 +24,8 @@ class CreateActivityTable extends Migration
             $table->date('start')->nullable()->comment('活动开始时间');
             $table->date('end')->nullable()->comment('活动结束时间');
             $table->integer('status')->default(0)->comment('0-审核中，1-通过审核待上架（未开始），2-上架中,3-下架（已结束）,4-删除');
+            $table->integer('isRotation')->default(0)->comment('0-不展示,1-展示');
+            $table->integer('isInformation')->default(0)->comment('0-不展示,1-展示');
             $table->timestamps();
         });
     }

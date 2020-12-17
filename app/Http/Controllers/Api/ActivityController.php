@@ -15,6 +15,14 @@ class ActivityController extends Controller
     {
 
         $data = Activity::find($request->activityId)->allStudent()->paginate($request->pageSize ? $request->pageSize : 10);
+        if($request->input('pageSize'))
+        {
+            $data = Activity::find($request->activityId)->allStudent()->paginate($request->pageSize);
+        }
+        else
+        {
+            $data = Activity::find($request->activityId)->allStudent()->get();
+        }
         if($data)
         {
             return response()->json([
@@ -238,4 +246,34 @@ class ActivityController extends Controller
     }
     // 获取我参加的活动
 
+
+
+    // 更改轮播栏状态
+    public function updateRotation(Request $request) {
+        $res = Activity::find($request->activityId)->update([
+            'isRotation' => $request->isRotation
+        ]);
+        if($res)
+        {
+            return response()->json(['code' => 200,'msg' => '修改成功']); 
+        }
+        return response()->json(['code' => 201,'msg' => '修改失败']); 
+    }
+
+    // 更改资讯栏状态
+    public function updateInfomation(Request $request) {
+        $res = Activity::find($request->activityId)->update([
+            'isInformation' => $request->isInformation
+        ]);
+        if($res)
+        {
+            return response()->json(['code' => 200,'msg' => '修改成功']); 
+        }
+        return response()->json(['code' => 201,'msg' => '修改失败']); 
+    }
+
+
+    // 获得活动轮播栏列表
+
+    // 获得资讯栏状态列表
 }

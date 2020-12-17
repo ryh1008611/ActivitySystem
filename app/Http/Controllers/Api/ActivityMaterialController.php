@@ -50,12 +50,13 @@ class ActivityMaterialController extends Controller
 
     // 更改审核状态
     public function update(Request $request, $id)
-    {     
+    {   
+        // return 1;  
         $this->validate($request, [
             'apply_status' => 'required'
         ]);
         $data = ActivityMaterial::find($id)->update([
-            'apply_status' => $request->status
+            'apply_status' => $request->apply_status
         ]);
         if($data)
         {
