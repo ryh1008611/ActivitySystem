@@ -50,7 +50,12 @@ Route::namespace('Api')->prefix('v1')->middleware('cors')->group(function () {
             Route::post('/activity/updateRotation', 'ActivityController@updateRotation')->name('activity.updateRotation');
                // 更改资讯栏状态
             Route::post('/activity/updateInfomation', 'ActivityController@updateInfomation')->name('activity.updateInfomation');
+            Route::get('/activity-query/rotationList', 'ActivityController@rotationList')->name('activity.rotationList');
+            // 更改资讯栏状态
+            Route::get('/activity-query/infomationList', 'ActivityController@infomationList')->name('activity.infomationList');
             // 申请活动
+            // 获得上线的活动列表
+            Route::get('/activity-query/getActivityOnlineList', 'ActivityController@getActivityOnlineList')->name('activity.getActivityOnlineList');
             // 材料
             Route::resource('material', 'MaterialController');
             // 材料申请

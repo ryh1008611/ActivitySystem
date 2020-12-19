@@ -209,7 +209,10 @@ class ActivityController extends Controller
     }
     public function show($id){
         $activity = Activity::where('id','=',$id)->get();
-   
+        if($activity[0]->status!= 1)
+        {
+            return response()->json(['code' => 201,'msg' => '该活动当前不可查看']);
+        }
         if(count($activity)>0)
         {
             foreach($activity as $k)
@@ -274,6 +277,68 @@ class ActivityController extends Controller
 
 
     // 获得活动轮播栏列表
+    public function rotationList(Request $request) 
+    {
+
+        $activity = Activity::where('isRotation','=',1)->paginate($request->pageSize ? $request->pageSize : 10);
+        $data = [];
+        if($activity)
+        {
+            foreach($activity as $k)
+            {
+                $images = Images::query()->where('activity_id','=',$k->id)->first();
+                array_push($data,[
+                    'activityId' => $k->id,
+                    'url'=> env('APP_URL').$images->url
+                ]);
+                
+            }
+        }
+        return response()->json(['code' => 200,'msg' => '查询成功','data'=>$data]);  
+    }
 
     // 获得资讯栏状态列表
+    public function infomationList(Request $request) 
+    {       
+        $activity = Activity::where('isInformation','=',1)->paginate($request->pageSize ? $request->pageSize : 10);
+        return response()->json(['code' => 200,'msg' => '查询成功','data'=>$activity]);  
+    }
+
+    // 获得上线的活动列表
+    public function getActivityOnlineList(Request $request)
+    {
+        // 获取上线活动
+        $activity = Activity::where('status','=',1);
+        // 根据活动名查询活动
+        if($request->input('title'))
+        {
+            $activity = $activity->where('title','like','%'.$request->title.'%');
+        }
+        // 根据活动地点查询活动
+        if($request->input('adress'))
+        {
+            $activity = $activity->where('adress','like','%'.$request->adress.'%');
+        }
+        //根据日期查询活动
+        if($request->input('start'))
+        {
+            $activity = $activity->where('start','like','%'.$request->start.'%');
+        }
+        // 分页
+        $activity = $activity->paginate($request->pageSize ? $request->pageSize : 10);
+        // 查询活动展示图片
+        if($activity)
+        {
+            foreach($activity as $k)
+            {
+                $images = Images::query()->where('activity_id','=',$k->id)->first();
+                
+                $k->offsetSet('url', env('APP_URL').$images->url);
+                // 发起者姓名
+                $k->offsetSet('name', User::where('id','=',$k->user_id)->get()[0]->name);
+                
+            }
+        }
+        return response()->json(['code'=>200,'msg'=>'查询成功!','data'=>$activity]);
+    }
 }
