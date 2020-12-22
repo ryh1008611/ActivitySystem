@@ -31,6 +31,7 @@ Route::namespace('Api')->prefix('v1')->middleware('cors')->group(function () {
             Route::put('/users/update-password', 'UserController@updatePassword')->name('users.password');
             //用户信息
             Route::get('/users/{user}', 'UserController@show')->name('users.show');
+            Route::get('/user-info/list', 'UserController@list')->name('users.list');
             //用户退出
             Route::get('/logout', 'UserController@logout')->name('users.logout');
             //修改用户状态
@@ -79,7 +80,10 @@ Route::namespace('Api')->prefix('v1')->middleware('cors')->group(function () {
 
             // 活动类型管理
             Route::resource('activityType', 'ActivityTypeController');
-
+            // 参加活动
+            Route::resource('join', 'JoinController');
+            // 签到
+            Route::post('/join-user/sign', 'JoinController@signIn')->name('mail.signIn');    
 
             // 权限管理
             Route::resource('roles', 'RoleController');

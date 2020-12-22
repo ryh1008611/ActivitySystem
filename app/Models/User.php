@@ -58,4 +58,11 @@ class User extends Authenticatable implements JWTSubject
     public function books(){
         return $this->hasMany(Book::class,'user_id','id')->limit(2);
     }
+
+    // 获取我参加的所有活动
+    public function allActivity()
+    {
+       //  获得这个活动的所有物资
+       return $this->belongsToMany(Activity::class, 'activity_user', 'user_id','activity_id')->withPivot('status');
+    }
 }

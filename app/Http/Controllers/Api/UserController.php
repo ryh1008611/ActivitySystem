@@ -42,6 +42,25 @@ class UserController extends Controller
             ]);
         }
     }
+     //返回所有用户
+     public function list(Request $request){
+        //3个用户为一页
+        $users = users::get();
+        if($users)
+        {
+            return response()->json([
+                'code' => 200,
+                'records' => $users
+            ]);
+        }
+        else
+        {
+            return response()->json([
+                'code' => 201,
+                'msg' => '暂时信息'
+            ]);
+        }
+    }
     //返回单一用户信息
     public function show(User $user){
         return $this->success(new UserResource($user));
