@@ -13,4 +13,3 @@ composer install
 4.php artisan key:generate
 5.php artisan jwt:secret
 6.php artisan serve  启动项目
-
